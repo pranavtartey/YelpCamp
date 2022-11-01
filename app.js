@@ -1,11 +1,11 @@
 if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').config();
+    require('dotenv').config({});
 }
 // console.log(process.env.SECRET);
-
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressErrors');
@@ -22,6 +22,7 @@ const MongoStore = require('connect-mongo');
 // process.env.DB_URL;
 // 'mongodb://localhost:27017/yelp-camp'
 const app = express();
+console.log(process.env.NODE_ENV)
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 mongoose.connect(dbUrl,{
     useNewUrlParser : true,
@@ -107,7 +108,16 @@ app.use((err,req,res,next) => {
     if(!err.message) error.message = 'Oh no, something went wrong';
     res.status(statusCode).render('error',{ err });
 })
+
+// console.log(slugify('Fresh Avacados' , {lower : true}));
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`Connected on port ${port}`);
 })
+//https://powerful-journey-53386.herokuapp.com/campgrounds
+
+//https://powerful-journey-53386.herokuapp.com/
+
+//https://powerful-journey-53386.herokuapp.com/campgrounds
+
+//DB_URL=mongodb+srv://pranavtartey:wwXC7YR9W7H5J3BA@cluster0.ugegucg.mongodb.net/?retryWrites=true&w=majority

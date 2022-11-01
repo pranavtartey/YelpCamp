@@ -5,7 +5,19 @@ const geocoder = mbxGeocoding({accessToken: mapBoxToken});
 const {cloudinary} = require('../cloudinary')
 
 module.exports.index = async (req,res) => {
-    const campgrounds = await Campground.find({});
+    let queryObj = {...req.query};
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    console.log(JSON.parse(queryStr));
+    //SORTING....
+    let query = Campground.find(JSON.parse(queryStr));
+    if(req.query.sort){
+        query = query.sort(req.query.sort)
+        console.log(req.query.sort)
+    }
+    //EXECUTION OF THE QUERY OBJECT
+    const campgrounds = await query;
+    // console.log(campgrounds)
     for(let campground of campgrounds){
         campground._id = campground._id.toString();
     }
